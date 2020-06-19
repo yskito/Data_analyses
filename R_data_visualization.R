@@ -18,7 +18,7 @@ data = iris
 pdf(pdf_name, height=10, width=10)
 
 # 1. pairs
-pairs.panels(data, hist.col="#99CCFF")#, bg = as.numeric(iris$Species), pch = 21)
+pairs.panels(data, hist.col="#99CCFF")
 
 # 2. histgram (正確な分布の確認)
 if( length(data) %%2 == 0){ ncol=(length(data)/2)}
