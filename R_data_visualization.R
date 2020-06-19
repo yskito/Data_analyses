@@ -10,7 +10,7 @@ library(GGally)
 library(ggplot2)
 
 #========================================
-# visualize data 
+# Visualize data 
 #========================================
 pdf_name = "data_visualization.pdf"
 data = iris
