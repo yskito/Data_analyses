@@ -35,7 +35,8 @@ ggpairs( data ) + theme_bw();
 dev.off()
 
 print( summary( data ) )
-   
+
+print( "sample" )
 
 
 
