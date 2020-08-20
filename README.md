@@ -1,2 +1,3 @@
 # data-visualization
-This is a R script to visualize data and reserve a pdf file.
+(file1) data_analyses_function.R -> preparing for data_analyses: setting, summarize data, visualize data etc.
+(file2) .R -> 
