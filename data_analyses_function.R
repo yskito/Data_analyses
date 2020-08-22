@@ -3,34 +3,42 @@
 #============================
 setting <- function(){
    
-   # delete all object 
-   rm(list=ls(all=TRUE))
+   basic_setting <- function(){
+      rm(list=ls(all=TRUE));
+      dirname(rstudioapi::getSourceEditorContext()$path) # or use setwd()
+      library( needs ); needs( skimr, GGally, "e1071", snowfall, doParallel, psych ); 
+   }; basic_setting();
    
-   # set derectory
-   dirname(rstudioapi::getSourceEditorContext()$path) # or use setwd()
-   
-   # load library
-   library( needs ); needs( skimr, GGally, "e1071", snowfall, doParallel, psych ); 
-   
-   # set cores
-   cores = detectCores();
-   sfInit(parallel = TRUE, cpus = cores)
+   PARALLEL_setting <- function(){
+      cores <<- detectCores();
+      sfInit(parallel = TRUE, cpus = cores)
+   }; PARALLEL_setting();
 }
 
 #============================
-# 2. summarize data_frame
+# 2. set parameters
+#============================
+set_parms <- function(){
+   seed <<- 123;
+   train_rate <<- 0.8;
+   object_col <<- 5;
+}; 
+
+#============================
+# 3. summarize data_frame
 #============================
 df_smrz<- function( data ){
    if(!is.data.frame(data)) data = as.data.frame( data );
    
-   dim = dim( data ); print( dim );
-   print( head( data, 10 ) )
-   print( summary( data ) )
    print( skim(data) )
+   # if u need, then use them.
+   # dim = dim( data ); print( dim );
+   # print( head( data, 10 ) )
+   # print( summary( data ) )
 }
 
 #============================
-# 3. visualize data_frame
+# 4. visualize data_frame
 #============================
 df_vis<- function( data ){
    height=960; width=960;
@@ -49,9 +57,29 @@ df_vis<- function( data ){
 }
 
 #============================
-# 4. arrange data_frame
+# 5. arrange data_frame
 #============================
-df_arrange<- function( data ){
+df_train_test<- function( data ){
+   
+   # STEP0: set seed & extract rows of train data
+   set.seed(seed); 
+   train_row = sample( nrow(data), nrow(data) * train_rate );
+   
+   # STEP1: train&test data  
+   train_data = data[train_row,];  
+   test_data  = data[-train_row,]; 
+   
+   # STEP2: objective variable is named as "y" (to facilitate you to use R packages (e.g., rpart, RF, lm and svm) )
+   names(train_data)[object_col] = "y";
+   names(test_data) [object_col] = "y";
+   
+   # STEP3: except objective variable
+   train_feature = train_data[,-object_col]
+   test_feature  = test_data [,-object_col]
+   
+   # STEP4: objective variable
+   train_label   = as.factor( train_data[,object_col] )
+   test_label    = as.factor( test_data [,object_col] )
    
 }
 
@@ -59,6 +87,13 @@ df_arrange<- function( data ){
 # X. output image file
 #============================
 output_image<- function(  ){
+   
+}
+
+#============================
+# X. how correct/wrong prediction data are distributed in the dataset?
+#============================
+df_crrt_wrng<- function(  ){
    
 }
 
